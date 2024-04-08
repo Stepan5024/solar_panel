@@ -8,10 +8,25 @@ from tkinter import font as tkFont
 from PIL import Image, ImageTk
 import cv2
 from tkinter import filedialog
+import sys
+if not hasattr(sys, 'stdout'):
+    class FakeStream(object):
+        def write(self, txt):
+            pass
+
+        def flush(self):
+            pass
+
+    sys.stdout = FakeStream()
+    sys.stderr = FakeStream()
+
 from ultralytics import YOLO
 import os
 import threading
+import io
 
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 # Загружаем модель YOLO
 model_path = os.path.join('F:\\', 'solar_panel', 'runs', 'detect', 
