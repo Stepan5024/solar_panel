@@ -1,0 +1,16 @@
+path: 'F:\solar_panel\dataset' # dataset root dir
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['Bird-drop', 'Dusty', 'Electrical-damage', 'Physical-damage', 'Snow-covered', 'clean']
+
+# Classes
+names:
+  0: Bird-drop
+  1: Dusty
+  2: Electrical-damage
+  3: Physical-damage
+  4: Snow-covered
+  5: clean
