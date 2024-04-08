@@ -15,6 +15,7 @@ Detection for defects in solar panels.v10i.yolov8
 DetectionY8.v1i.yolov8/
 
 *.zip
+test_video1.mp4
 test_video1.mp4_out.mp4
 # Distribution / packaging
 .Python
