@@ -8,6 +8,50 @@ from tkinter import font as tkFont
 from PIL import Image, ImageTk
 import cv2
 from tkinter import filedialog
+from ultralytics import YOLO
+import os
+import threading
+
+
+# Загружаем модель YOLO
+model_path = os.path.join('F:\\', 'solar_panel', 'runs', 'detect', 
+                              'train3', 'weights', 'best.pt')
+model = YOLO(model_path)  # Загрузка модели YOLO
+threshold = 0.5  # Порог для обнаружения
+
+
+def analyze_video(video_path, video_path_out, model, threshold):
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Ошибка при открытии видео файла.")
+        return
+
+    ret, frame = cap.read()
+    if ret:
+        H, W, _ = frame.shape
+        out = cv2.VideoWriter(video_path_out, cv2.VideoWriter_fourcc(*'MP4V'), int(cap.get(cv2.CAP_PROP_FPS)), (W, H))
+
+        while ret:
+            # Применяем модель YOLO к кадру
+            results = model(frame)[0]
+
+            for result in results.boxes.data.tolist():
+                x1, y1, x2, y2, score, class_id = result
+                if score > threshold:
+                    cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 4)
+                    cv2.putText(frame, results.names[int(class_id)].upper(), (int(x1), int(y1 - 10)),
+                                cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3, cv2.LINE_AA)
+
+            out.write(frame)
+            ret, frame = cap.read()
+
+        cap.release()
+        out.release()
+        cv2.destroyAllWindows()
+        print("Анализ видео завершен, результат сохранен как:", video_path_out)
+    else:
+        print("Ошибка: не удалось прочитать видео.")
+
 
 # Функция, вызываемая при нажатии на кнопку загрузки видео
 def load_video():
@@ -17,22 +61,13 @@ def load_video():
     if not video_path:  # Проверка на случай отмены выбора файла
         return
     
-    # Используйте OpenCV для чтения видео файла
-    cap = cv2.VideoCapture(video_path)
-    if not cap.isOpened():
-        print("Ошибка при открытии видео файла.")
-        return
+    
+    video_path_out = f"{video_path.split('.')[0]}_out.mp4"
+    
+    # Запуск длительной операции в отдельном потоке
+    thread = threading.Thread(target=analyze_video, args=(video_path, video_path_out, model, threshold))
+    thread.start()
 
-    # Читаем первый кадр видео
-    ret, frame = cap.read()
-    if ret:
-        # Конвертируем изображение BGR в RGB
-        cv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        pil_image = Image.fromarray(cv_image)
-        pil_image.show()  # Отображаем первый кадр видео
-        
-    # Освобождаем ресурсы
-    cap.release()
 
 # Функция для обновления изображения в карусели
 def update_image(step):

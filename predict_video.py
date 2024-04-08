@@ -1,7 +1,7 @@
 import os
 from ultralytics import YOLO
 import cv2
-import cv2
+
 
 # Получаем информацию о сборке OpenCV
 build_info = cv2.getBuildInformation()
