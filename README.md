@@ -10,13 +10,13 @@
 
 ## Установка и запуск
 
-Для работы с системой убедитесь, что у вас установлен Docker. Инструкции по установке Docker можно найти на официальном сайте: [Get Docker](https://docs.docker.com/get-docker/).
+Для работы с системой убедитесь, что у вас установлен 'Docker'. Инструкции по установке 'Docker' можно найти на официальном сайте: [Get Docker](https://docs.docker.com/get-docker/).
 
 ### Подготовка образа Docker
 
 1. Склонируйте репозиторий или скачайте исходные файлы проекта в локальную директорию.
 2. Откройте терминал и перейдите в каталог проекта.
-3. Выполните команду для сборки Docker образа:
+3. Выполните команду для сборки 'Docker' образа:
 
 ```bash
 docker build -t solar_panel_prod .
@@ -38,13 +38,13 @@ docker run --name solar_panel_container solar_panel_prod
 * Наблюдать за обновлением графика обнаруженных дефектов во времени.
 
 # Зависимости
-Python 3.10
-Tkinter
-Matplotlib
-NumPy
-Pillow
-OpenCV
-Ultralytics YOLO
+* Python 3.10
+* Tkinter
+* Matplotlib
+* NumPy
+* Pillow
+* OpenCV
+* Ultralytics YOLO
 
 # Контакты
 Степан Бокарев, студент МАИ 4 курса. 
